@@ -1,7 +1,28 @@
 # Lambda HTTPS Doctor
 A https health doctor which run on top of AWS Lambda
 
-## Configuration
+## How to
+
+### Get the things ready
+
+```bash
+# Clone the repository
+git clone git@github.com:xpartacvs/lambda-https-doctor.git
+
+# Change directory
+cd lambda-https-doctor
+
+# Download the dependencies
+go mod tidy
+
+# Compile to binary
+GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o ./https-doctor main.go
+
+# Compress the binary
+zip https-doctor.zip https-doctor
+```
+
+## Environment Variables
 
 I was designed to get configured by environment variables.
 
