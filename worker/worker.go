@@ -34,8 +34,8 @@ func examine() error {
 			defer wg.Done()
 			var title, content string = strings.ToUpper(host), ""
 			httpsClient := client.New(host, logger.Log())
-			result, expiry := httpsClient.GetExpiry()
-			switch result {
+			expiry, err := httpsClient.GetExpiry()
+			switch err {
 			case client.ErrTimeout:
 				content = "Connection timeout."
 				if config.Get().ZerologLevel() != zerolog.Disabled {
@@ -50,13 +50,13 @@ func examine() error {
 				content = "Wrong SSL certificate."
 				notif.AddField(title, content, false)
 			case client.ErrCertExpired:
-				days := int(time.Until(expiry).Hours()/24) * -1
+				days := int(time.Until(*expiry).Hours()/24) * -1
 				content = "SSL expired for " + strconv.Itoa(days) + " days."
 				notif.AddField(title, content, false)
 			default:
 				graceTime := expiry.AddDate(0, 0, config.Get().Graceperiod())
 				if time.Now().After(graceTime) {
-					days := int(time.Until(expiry).Hours() / 24)
+					days := int(time.Until(*expiry).Hours() / 24)
 					content = "SSL expired in " + strconv.Itoa(days) + " days."
 					notif.AddField(title, content, false)
 				}

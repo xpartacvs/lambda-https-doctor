@@ -3,7 +3,7 @@ A https health doctor which run on top of AWS Lambda
 
 ## How to
 
-### Get the things ready
+Get the things ready:
 
 ```bash
 # Clone the repository
@@ -21,6 +21,8 @@ GOARCH=amd64 GOOS=linux go build -ldflags="-s -w" -o ./https-doctor main.go
 # Compress the binary
 zip https-doctor.zip https-doctor
 ```
+
+Then upload it to your AWS Lambda
 
 ## Environment Variables
 
